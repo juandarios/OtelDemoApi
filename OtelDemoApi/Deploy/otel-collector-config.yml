@@ -1,0 +1,42 @@
+﻿receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317" # gRPC endpoint for receiving OTLP data
+      http:
+        endpoint: "0.0.0.0:4318" # HTTP endpoint for receiving OTLP data
+
+exporters:
+  debug:
+    verbosity: detailed # Exporter for detailed debug information
+  prometheus:
+    endpoint: "0.0.0.0:8889" # Endpoint for Prometheus metrics
+  otlp:
+    endpoint: "jaeger:4317" # Endpoint for exporting traces to Jaeger
+    tls:
+      insecure: true # Disable TLS for the OTLP exporter
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push" # Endpoint for exporting logs to Loki
+
+processors:
+  batch: # Batch processor to optimize data export
+  attributes:
+    actions:
+      - key: "job"
+        value: "otel-demo-api"
+        action: insert # Insert the "job" attribute with value "otel-demo-api" into each log entry
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp] # Use OTLP receiver for traces
+      processors: [batch] # Use batch processor for traces
+      exporters: [otlp] # Export traces to OTLP endpoint (Jaeger)
+    metrics:
+      receivers: [otlp] # Use OTLP receiver for metrics
+      processors: [batch] # Use batch processor for metrics
+      exporters: [prometheus] # Export metrics to Prometheus
+    logs:
+      receivers: [otlp] # Use OTLP receiver for logs
+      processors: [batch, attributes] # Use batch and attributes processors for logs
+      exporters: [loki] # Export logs to Loki

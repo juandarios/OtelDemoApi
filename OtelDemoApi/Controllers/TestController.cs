@@ -18,8 +18,8 @@ namespace OtelDemoApi.Controllers
         [HttpGet("info")]
         public IActionResult GetInfo()
         {
-            _logger.LogInformation("Este es un log de nivel Information desde /info");
-            return Ok("Endpoint de prueba: nivel Information");
+            _logger.LogInformation("This is an Information level log from /info");
+            return Ok("Test endpoint: Information level");
         }
 
         // GET: api/test/warning
@@ -27,8 +27,8 @@ namespace OtelDemoApi.Controllers
         [HttpGet("warning")]
         public IActionResult GetWarning()
         {
-            _logger.LogWarning("Este es un log de nivel Warning desde /warning");
-            return Ok("Endpoint de prueba: nivel Warning");
+            _logger.LogWarning("This is a Warning level log from /warning");
+            return Ok("Test endpoint: Warning level");
         }
 
         // GET: api/test/error
@@ -36,18 +36,18 @@ namespace OtelDemoApi.Controllers
         [HttpGet("error")]
         public IActionResult GetError()
         {
-            _logger.LogError("Este es un log de nivel Error desde /error");
+            _logger.LogError("This is an Error level log from /error");
             try
             {
                 // Simulate an exception to test error logging
-                throw new Exception("Excepción simulada para probar error");
+                throw new Exception("Simulated exception to test error");
             }
             catch (Exception ex)
             {
                 // Log the caught exception with error level
-                _logger.LogError(ex, "Excepción capturada en /error");
+                _logger.LogError(ex, "Exception caught in /error");
             }
-            return Ok("Endpoint de prueba: nivel Error (revisa los logs)");
+            return Ok("Test endpoint: Error level (check the logs)");
         }
     }
 }

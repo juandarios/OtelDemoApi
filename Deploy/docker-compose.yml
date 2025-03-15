@@ -3,20 +3,22 @@
 services:
   otel-demo-api:
     build:
-      context: ..
-      dockerfile: Dockerfile
+      context: .. # Change the context to the solution's root directory
+      dockerfile: OtelDemoApi/Dockerfile # Specify the location of the Dockerfile
     ports:
       - "5000:8080" # Map HTTP port 8080 in the container to 5000 on the host
       - "5001:8081" # Map HTTPS port 8081 in the container to 5001 on the host
     environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - ASPNETCORE_ENVIRONMENT=Development # Set the environment to Development
+      - ASPNETCORE_HTTPS_PORT=5001 # Define the external redirection port
     depends_on:
       - otel-collector # Ensure otel-collector service is started before this service
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     volumes:
-      - ./otel-collector-config.yml:/etc/otelcol-contrib/config.yaml # Mount the OpenTelemetry Collector configuration file
+      - ../Deploy/otel-collector-config.yml:/etc/otelcol-contrib/config.yaml # Mount the OpenTelemetry Collector configuration file
     ports:
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP HTTP receiver

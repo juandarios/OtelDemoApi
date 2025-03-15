@@ -13,17 +13,20 @@ ENV ASPNETCORE_Kestrel__Certificates__Default__Password=password123
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 # Copy the project file and restore dependencies
-COPY ["OtelDemoApi.csproj", "."]
-RUN dotnet restore "OtelDemoApi.csproj"
+COPY ["OtelDemoApi/OtelDemoApi.csproj", "OtelDemoApi/"]
+COPY ["OtelDemoApi.ServiceDefaults/OtelDemoApi.ServiceDefaults.csproj", "OtelDemoApi.ServiceDefaults/"]
+# Restore dependencies for the entire solution
+RUN dotnet restore "OtelDemoApi/OtelDemoApi.csproj"
 # Copy the remaining source code and build the project
-COPY . .
-WORKDIR "/src/."
+COPY ["OtelDemoApi/", "OtelDemoApi/"]
+COPY ["OtelDemoApi.ServiceDefaults/", "OtelDemoApi.ServiceDefaults/"]
+WORKDIR "/src/OtelDemoApi"
 RUN dotnet build "OtelDemoApi.csproj" -c Release -o /app/build
 
 # Stage for publishing the service project
 FROM build AS publish
 # Publish the project to the /app/publish directory
-RUN dotnet publish "./OtelDemoApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "OtelDemoApi.csproj" -c Release -o /app/publish
 
 # Final stage for running the application in production or regular mode (Default when not using the Debug configuration)
 FROM base AS final
@@ -31,6 +34,6 @@ WORKDIR /app
 # Copy the published output from the publish stage
 COPY --from=publish /app/publish .
 # Copy the HTTPS certificate to the container
-COPY ./https/otel-demo-api.pfx /https/otel-demo-api.pfx
+COPY ["Https/otel-demo-api.pfx", "/https/otel-demo-api.pfx"]
 # Set the entry point to run the application
 ENTRYPOINT ["dotnet", "OtelDemoApi.dll"]

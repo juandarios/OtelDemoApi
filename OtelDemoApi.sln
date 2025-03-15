@@ -1,9 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35818.85 d17.13
+VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemoApi", "OtelDemoApi\OtelDemoApi.csproj", "{17266650-627B-4FE7-910F-A93588AB9068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemoApi.ServiceDefaults", "OtelDemoApi.ServiceDefaults\OtelDemoApi.ServiceDefaults.csproj", "{7BDF8233-7C35-474C-99FE-3A5FFB6E687C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\docker-compose.yml = Deploy\docker-compose.yml
+		Deploy\otel-collector-config.yml = Deploy\otel-collector-config.yml
+		Deploy\prometheus.yml = Deploy\prometheus.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Https", "Https", "{4762C185-D6B6-4D11-80BA-B74E12AA7F2F}"
+	ProjectSection(SolutionItems) = preProject
+		Https\otel-demo-api.pfx = Https\otel-demo-api.pfx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +29,10 @@ Global
 		{17266650-627B-4FE7-910F-A93588AB9068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17266650-627B-4FE7-910F-A93588AB9068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17266650-627B-4FE7-910F-A93588AB9068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BDF8233-7C35-474C-99FE-3A5FFB6E687C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BDF8233-7C35-474C-99FE-3A5FFB6E687C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BDF8233-7C35-474C-99FE-3A5FFB6E687C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BDF8233-7C35-474C-99FE-3A5FFB6E687C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

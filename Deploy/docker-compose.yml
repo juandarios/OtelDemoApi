@@ -12,6 +12,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - ASPNETCORE_ENVIRONMENT=Development # Set the environment to Development
       - ASPNETCORE_HTTPS_PORT=5001 # Define the external redirection port
+      - OTEL_SERVICE_NAME=OtelDemoApi  # Define the service name
     depends_on:
       - otel-collector # Ensure otel-collector service is started before this service
 

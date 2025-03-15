@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace Microsoft.Extensions.Hosting;
@@ -49,7 +50,14 @@ public static class Extensions
             logging.IncludeScopes = true;
         });
 
+        // Get the service name from configuration or environment variable, with a fallback
+        string serviceName = builder.Configuration["ServiceName"]
+            ?? Environment.GetEnvironmentVariable("OTEL_SERVICE_NAME")
+            ?? "UnknownService";
+
         builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(serviceName: serviceName)) // Use the configurable service name
             .WithMetrics(metrics =>
             {
                 metrics.AddAspNetCoreInstrumentation()
